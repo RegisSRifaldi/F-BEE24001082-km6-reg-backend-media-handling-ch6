@@ -1,0 +1,260 @@
+openapi: 3.0.1
+info:
+  title: Gambar Image
+  description: Open API Image
+  version: 1.0.0
+  contact:
+    email: regisrifaldi44@gmail.com
+servers:
+  - url: http://localhost:3000/api/v1
+
+paths:
+  /imagekit/upload/image:
+    post:
+      tags:
+        - "- Mengunggah gambar bersama dengan judul dan deskripsi."
+      summary: Create a new Image
+      requestBody:
+        $ref: "#/components/requestBodies/Images"
+
+      responses:
+        201:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: berhasil membuat data gambar
+                  data:
+                    allOf:
+                      - $ref: "#components/schemas/Image"
+        400:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Cannot read properties of undefined (reading 'buffer')
+                  data:
+                    type: string
+                    example: null
+
+  /imagekit/uploaded/images:
+    get:
+      tags:
+        - "- Melihat daftar gambar yang telah diunggah beserta informasi terkait."
+      summary: getall a Image
+
+      responses:
+        201:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        judul:
+                          type: string
+                        deskripsi:
+                          type: string
+                        gambar_url:
+                          type: string
+                          format: binary
+              examples:
+                responses:
+                  value:
+                    status: true
+                    message: berhasil menampilkan data gambar!
+                    data:
+                      - id: 1
+                        judul: motor
+                        deskripsi: motor lu ada berapa bos!
+                        gambar_url: https://ik.imagekit.io/gis/1714228718187_aCvjW7ctR.PNG
+                      - id: 2
+                        judul: motor
+                        deskripsi: motor lu ada berapa bos!
+                        gambar_url: https://ik.imagekit.io/gis/1714228718187_aCvjW7ctR.PNG
+
+  /imagekit/uploaded/image/{id}:
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      tags:
+        - "- Melihat detail gambar beserta informasi terkait."
+      summary: Get by Image Id
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: berhasil membuat data gambar!
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/Image"
+        400:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: id 18 tersebut tidak ada, mohon masukan pencarian yang benar!
+
+    delete:
+      tags:
+        - "- Menghapus gambar."
+      summary: Delete by Image Id
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: berhasil menghapus data gambar!
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/Image"
+        400:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: id 18 tersebut tidak ada, mohon masukan pencarian yang benar!
+
+    put:
+      tags:
+        - "- Mengedit judul dan deskripsi gambar yang telah diunggah."
+      summary: Update by Image Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                judul:
+                  type: string
+                  example: Mouse
+                deskripsi:
+                  type: string
+                  example: Noir m1 terbaik!
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: berhasil update data gambar!
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/Image"
+        400:
+          description: error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: id 18 tersebut tidak ada, mohon masukan pencarian yang benar!
+
+components:
+  schemas:
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        judul:
+          type: string
+          example: Mouse
+        deskripsi:
+          type: string
+          example: Noir m1 terbaik!
+        gambar_url:
+          type: string
+          format: binary
+          example: https://ik.imagekit.io/gis/1714228718187_aCvjW7ctR.PNG
+  requestBodies:
+    Images:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              judul:
+                type: string
+                example: Mouse
+              deskripsi:
+                type: string
+                example: Noir m1 terbaik!
+              gambar_url:
+                type: string
+                format: binary
+                example: https://ik.imagekit.io/gis/1714228718187_aCvjW7ctR.PNG
