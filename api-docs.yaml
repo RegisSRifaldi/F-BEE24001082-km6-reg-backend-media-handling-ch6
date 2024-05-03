@@ -7,6 +7,8 @@ info:
     email: regisrifaldi44@gmail.com
 servers:
   - url: https://expressjs-production-693c.up.railway.app/api/v1
+  - url: https://expressjs-development-f8d1.up.railway.app/api/v1
+  - url: http://localhost:3000/api/v1
 # Example url localhost   : http://localhost:3000/api/v1
 # Example url development : https://expressjs-development-f8d1.up.railway.app/api/v1
 # Example url production  : https://expressjs-production-693c.up.railway.app/api/v1
