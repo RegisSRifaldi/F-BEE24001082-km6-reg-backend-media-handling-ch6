@@ -19,7 +19,7 @@ const file = fs.readFileSync("./api-docs.yaml", "utf-8");
 const swaggerDocument = YAML.parse(file);
 
 app.get("/", (req, res) =>
-  res.json({ status: true, message: "Hello world!", data: null })
+  res.json({ status: true, message: "Selamat Datang Dichapter 6!", data: null })
 );
 
 const routerApp = require("./routes");
